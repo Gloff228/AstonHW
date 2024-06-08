@@ -11,11 +11,12 @@ class Buyer implements IBuyer, IUseBasket {
     private static final AtomicInteger buyersCount = new AtomicInteger(0);
     private final int buyerID;
     private Map<String, Integer> chosenGoods;
-    private Map<String, Integer> availableGoods;
+    private final Map<String, Integer> availableGoods;
     private final Random random = new Random();
 
-    public Buyer() {
+    public Buyer(Map<String, Integer> goods) {
         this.buyerID = buyersCount.getAndIncrement();
+        this.availableGoods = goods;
     }
 
     private void waitRandomTime() {
@@ -32,7 +33,6 @@ class Buyer implements IBuyer, IUseBasket {
         System.out.println("Buyer " + this.buyerID + " entered");
 
         takeBasket();
-        searchForGoods();
 
         for (int i = 0; i < random.nextInt(1, 5); i++) {
             chooseGoods();
@@ -40,16 +40,6 @@ class Buyer implements IBuyer, IUseBasket {
 
         putGoodsToBasket();
         goOut();
-    }
-
-    public void searchForGoods() {
-        this.availableGoods = Map.of(
-                "Помидор", 10,
-                "Огурец", 5,
-                "Хлеб", 15,
-                "Колбаса", 20,
-                "Сок", 30,
-                "Яблоко", 3);
     }
 
     @Override
